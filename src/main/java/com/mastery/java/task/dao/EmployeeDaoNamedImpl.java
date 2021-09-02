@@ -2,7 +2,6 @@ package com.mastery.java.task.dao;
 
 import com.mastery.java.task.dto.Employee;
 import com.mastery.java.task.dto.EmployeeMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -65,7 +64,7 @@ public class EmployeeDaoNamedImpl implements EmployeeDao {
 
     @Transactional
     @Override
-    public Employee update(Employee employee) {
+    public Boolean update(Employee employee) {
         Map<String, Object> params = new HashMap<>();
         params.put("employee_id", employee.getEmployeeId());
         params.put("first_name", employee.getFirstName());
@@ -74,10 +73,9 @@ public class EmployeeDaoNamedImpl implements EmployeeDao {
         params.put("gender", employee.getGender().getTitle());
         params.put("job_title", employee.getJob_title());
         params.put("date_of_birth", employee.getDate_of_birth());
-        jdbc.update("update employeedb.employee set first_name = :first_name, " +
+        return jdbc.update("update employeedb.employee set first_name = :first_name, " +
                 "last_name = :last_name, department_id = :department_id," +
                 " gender = :gender , job_title = :job_title,date_of_birth = :date_of_birth " +
-                "where employee_id = :employee_id ", params);
-        return employee;
+                "where employee_id = :employee_id ", params) == 1;
     }
 }
